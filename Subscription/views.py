@@ -75,7 +75,7 @@ def stripe_webhook(request):
 
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
-    endpoint_secret = "whsec_6d51a8bb1cf7ce8d906d93d297974282284f2c01144a0225c3754c8ceabc893a"  # ✅ Replace with your actual key
+    endpoint_secret = "*"  #Replace with your actual key
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
