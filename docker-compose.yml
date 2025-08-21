@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: farda_db
+      POSTGRES_USER: farda_user
+      POSTGRES_PASSWORD: farda_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: python manage.py migrate && python manage.py runserver 0.0.0.0:7000
+    volumes:
+      - .:/code
+    ports:
+      - "7000:7000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=your_secret_key
+      - DB_NAME=farda_db
+      - DB_USER=farda_user
+      - DB_PASSWORD=farda_pass
+      - DB_HOST=db
+      - DB_PORT=5432
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_SUCCESS_URL=${STRIPE_SUCCESS_URL}
+      - STRIPE_CANCEL_URL=${STRIPE_CANCEL_URL}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+
+volumes:
+  postgres_data:
