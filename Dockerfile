@@ -16,6 +16,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /code/
 
 # Expose port
-EXPOSE 8000
+EXPOSE 7000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:7000"]
