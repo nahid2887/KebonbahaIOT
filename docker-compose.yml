@@ -18,9 +18,10 @@ services:
       dockerfile: Dockerfile
     command: >
       sh -c "python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:7000"
+             daphne -b 0.0.0.0 -p 7000 farda.asgi:application"
     volumes:
       - .:/code
+      - ./staticfiles:/code/staticfiles
     ports:
       - "7000:7000"
     depends_on:

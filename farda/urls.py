@@ -23,8 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('accounts.urls')),
     #path('api/', include('Subscription.urls') ),
-    path('api/',include('notes.urls')),
-    path('api/',include('prescriptions.urls')),
+    path('api/', include('notes.urls')),
+    path('api/', include('prescriptions.urls')),
+    path('api/iot/', include('iot.urls')),
 
 
     path('api/auth/', include('dj_rest_auth.urls')),
@@ -40,3 +41,9 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
+
+# Serve static files in development
+from django.conf import settings
+from django.conf.urls.static import static
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

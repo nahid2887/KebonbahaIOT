@@ -63,6 +63,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+import os
 
 ALLOWED_HOSTS = ['*']  # Allow all hosts for development; restrict in production
 # Application definition
@@ -94,10 +95,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.apple',
 
     'django.contrib.sites',
+    'channels',
+    'iot',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -126,6 +130,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'farda.wsgi.application'
+CORS_ALLOW_ALL_ORIGINS = True  # ❗ Only use this during development
+
+ASGI_APPLICATION = 'farda.asgi.application'
+
+# Channels layer (using in-memory for dev; use Redis in prod)
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 CORS_ALLOW_ALL_ORIGINS = True  # ❗ Only use this during development
 
 SITE_ID = 1
@@ -202,8 +216,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Whitenoise settings for efficient static file serving
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
