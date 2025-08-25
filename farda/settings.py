@@ -141,7 +141,10 @@ CHANNEL_LAYERS = {
     },
 }
 CORS_ALLOW_ALL_ORIGINS = True  # ❗ Only use this during development
-
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'https://developer.tryfarda.app',
+]
 SITE_ID = 1
 REST_USE_JWT = True
 # Database
